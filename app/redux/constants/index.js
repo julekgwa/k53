@@ -1,0 +1,3 @@
+export const ON_SELECT_ANSWER = 'ON_SELECT_ANSWER';
+export const ON_SUBMIT = 'ON_SUBMIT';
+export const ON_PREVIOUS_QUESTION = 'ON_PREVIOUS_QUESTION';

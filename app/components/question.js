@@ -2,9 +2,14 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { RadioButton } from 'react-native-paper';
 
-export const Question = ({ title, question, onSelectAnswer, questionNumber }) => (
+export const Question = ({ title, question, onSelectAnswer, questionNumber, hasPhoto }) => (
   <View style={{ justifyContent: 'space-between' }}>
-    <Text style={{ fontSize: 18, marginBottom: 20 }}>{title}</Text>
+    <View style={{ flexDirection: 'row' }}>
+    <View style={{ backgroundColor: 'blue', width: 150, height: 150}}>
+      <Text>1</Text>
+    </View>
+    <Text style={{ fontSize: 18, marginBottom: 20, flex: 1, flexWrap: 'wrap', paddingHorizontal: 10 }}>{title}</Text>
+    </View>
     {question.possibleAnswers.map((drink, answerIndex) => (
       <View key={answerIndex} style={styles.drinkCard}>
         <RadioButton

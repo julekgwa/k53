@@ -1,5 +1,4 @@
-import { ON_SELECT_ANSWER, ON_SUBMIT } from 'app/redux/constants';
-import { ON_PREVIOUS_QUESTION } from '../constants';
+import { ON_SELECT_ANSWER, ON_SUBMIT, ON_NEXT_QUESTION, ON_PREVIOUS_QUESTION } from 'app/redux/constants';
 
 const initState = {
   questions: [
@@ -80,6 +79,11 @@ export function rootReducer(state = initState, action) {
       return {
         ...state,
         currentQuestionIndex: state.currentQuestionIndex > 0 ? state.currentQuestionIndex - 1 : 0
+      }
+    case ON_NEXT_QUESTION:
+      return {
+        ...state,
+        currentQuestionIndex: state.currentQuestionIndex < (state.questions.length - 1) ? state.currentQuestionIndex + 1 : state.currentQuestionIndex
       }
     default:
       return state;

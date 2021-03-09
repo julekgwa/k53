@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, SafeAreaView, View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { onPreviousQuestion, onSelectAnswer, onSubmit } from '../redux/actions';
+import { onNextQuestion, onPreviousQuestion, onSelectAnswer, onSubmit } from '../redux/actions';
 import { Question } from '../components/question';
 
 const mapStateToProps = (state) => {
@@ -18,7 +18,8 @@ const mapDispatchToProps = (dispatch) => {
     selectAnswer: (questionNumber, answerIndex) =>
       dispatch(onSelectAnswer({ answerIndex, questionNumber })),
     submitScore: () => dispatch(onSubmit()),
-    onPreviousQuestion: () => dispatch(onPreviousQuestion())
+    onPreviousQuestion: () => dispatch(onPreviousQuestion()),
+    onNextQuestion: () => dispatch(onNextQuestion())
   };
 };
 
@@ -29,7 +30,8 @@ const MainApp = ({
   showScore,
   submitScore,
   totalScore,
-  onPreviousQuestion
+  onPreviousQuestion,
+  onNextQuestion
 }) => {
   return (
     <SafeAreaView>
@@ -44,6 +46,7 @@ const MainApp = ({
       {showScore && <Text>You got {totalScore} correct answer/s</Text>}
       <View style={{  flexDirection: 'row'}}>
         <Button title='Back' onPress={onPreviousQuestion} />
+        <Button title='Next' onPress={onNextQuestion} />
         <Button title='Submit' onPress={submitScore} />
       </View>
     </SafeAreaView>

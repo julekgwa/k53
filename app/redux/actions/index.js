@@ -1,4 +1,4 @@
-import { ON_PREVIOUS_QUESTION, ON_SELECT_ANSWER, ON_SUBMIT } from '../constants'
+import { ON_NEXT_QUESTION, ON_PREVIOUS_QUESTION, ON_SELECT_ANSWER, ON_SUBMIT } from '../constants'
 
 export const onSelectAnswer = (payload) => {
   return {
@@ -16,6 +16,12 @@ export const onSubmit = () => {
 export const onPreviousQuestion = () => {
   return {
     type: ON_PREVIOUS_QUESTION
+  }
+}
+
+export const onNextQuestion = () => {
+  return {
+    type: ON_NEXT_QUESTION
   }
 }
 

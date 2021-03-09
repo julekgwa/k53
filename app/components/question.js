@@ -32,10 +32,11 @@ const styles = StyleSheet.create({
     marginBottom: 20, 
     flex: 1, 
     flexWrap: 'wrap', 
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    marginTop: 10
   },
   container: {
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   questionContainer: {
     flexDirection: 'row'

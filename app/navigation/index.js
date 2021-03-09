@@ -3,6 +3,7 @@ import { Button, SafeAreaView, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { onNextQuestion, onPreviousQuestion, onSelectAnswer, onSubmit } from '../redux/actions';
 import { Question } from '../components/question';
+import { Colors } from '../styles/colors';
 
 const mapStateToProps = (state) => {
   return {
@@ -33,22 +34,17 @@ const MainApp = ({
   onPreviousQuestion,
   onNextQuestion
 }) => {
+
+  const currentQuestion = questions[currentQuestionIndex];
+
   return (
-    <SafeAreaView>
-      <View style={{ marginHorizontal: 20, marginTop: 20 }}>
-        <Question
-          question={questions[currentQuestionIndex]}
-          questionNumber={currentQuestionIndex}
-          title={questions[currentQuestionIndex].title}
-          onSelectAnswer={selectAnswer}
-        />
-      </View>
-      {showScore && <Text>You got {totalScore} correct answer/s</Text>}
-      <View style={{  flexDirection: 'row'}}>
-        <Button title='Back' onPress={onPreviousQuestion} />
-        <Button title='Next' onPress={onNextQuestion} />
-        <Button title='Submit' onPress={submitScore} />
-      </View>
+    <SafeAreaView style={{ backgroundColor: Colors.white, flex: 1}}>
+    <View style={{ flex: 1}}>
+    <Text style={{ fontSize: 25, color: Colors.veryDarkGrayishBlue, marginLeft: 20, marginTop: 10 }}>{currentQuestion.title}</Text>
+    </View>
+    <View style={{ flex: 1, backgroundColor: Colors.blue, borderTopLeftRadius: 30, borderTopRightRadius: 30 }}>
+      <Text>2</Text>
+    </View>
     </SafeAreaView>
   );
 };

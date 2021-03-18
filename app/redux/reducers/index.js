@@ -41,6 +41,25 @@ const initState = {
       correct: 1,
       answer: -1,
     },
+    {
+      title: 'A light/heavy vehicle should not carry a load that projects...',
+      possibleAnswers: [
+        {
+          label: 'More than 10 metres to the front of the vehicle.',
+          isChecked: 'unchecked',
+        },
+        {
+          label: 'More than 1.8 metres to the back of the vehicle.',
+          isChecked: 'unchecked',
+        },
+        {
+          label: 'Less than 1.8 millimetres to the left.',
+          isChecked: 'unchecked',
+        },
+      ],
+      correct: 1,
+      answer: -1,
+    },
   ],
   showScore: false,
   totalScore: 0,

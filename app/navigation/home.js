@@ -1,32 +1,26 @@
-import React from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import React from 'react';
+import { View, StyleSheet, Image } from 'react-native';
+import { Button } from '../components/button';
 import { Colors } from '../styles/colors';
 
-export const Home = () => {
+export const Home = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
-      <Image
-            style={styles.image}
-            source={{ uri: 'https://juniusl.com/logo.jpg' }}
-          />
+        <Image
+          style={styles.image}
+          source={{ uri: 'https://juniusl.com/logo.png' }}
+          resizeMode='contain'
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Take Test</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Learn</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>How to</Text>
-        </TouchableOpacity>
+        <Button title='Take test' onPress={() => navigation.navigate('Questions')} style={styles.button} />
+        <Button title='Learn' style={styles.button} />
+        <Button title='How to' style={styles.button} />
       </View>
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -37,15 +31,15 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 400,
-    height: 400
+    height: 400,
   },
   imageContainer: {
     flexGrow: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   buttonContainer: {
-    backgroundColor: Colors.vividBlue,
+    backgroundColor: Colors.darkBlue,
     justifyContent: 'center',
     alignItems: 'center',
     paddingTop: 10,
@@ -59,9 +53,4 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 10,
   },
-  buttonText: {
-    color: Colors.vividBlue,
-    fontSize: 18,
-    textAlign: 'center'
-  }
 });

@@ -36,6 +36,7 @@ export default function App() {
             name='Questions'
             options={{
               title: <HeaderTitle />,
+              headerBackTitleVisible: false,
               headerStyle: {
                 backgroundColor: Colors.white,
                 elevation: 0,

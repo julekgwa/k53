@@ -23,7 +23,7 @@ export const Answer = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.vividBlue,
+    backgroundColor: '#1a3c72',
     padding: 10,
     borderLeftWidth: 3,
     borderLeftColor: Colors.white,

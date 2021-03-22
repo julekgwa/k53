@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { Questions, Home } from './app/navigation';
 import { store } from './app/redux/store';
 import { Colors } from './app/styles/colors';
+import { Results } from './app/ui/results/results';
 
 const mapStateToProps = (state) => {
   return {
@@ -58,6 +59,7 @@ export default function App() {
             name='Home'
             component={Home}
           />
+          <Stack.Screen options={{ headerBackTitleVisible: false,}} name='Results' component={Results} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

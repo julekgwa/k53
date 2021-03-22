@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Button,
   SafeAreaView,
   View,
   Text,
@@ -14,9 +13,14 @@ import {
   onPreviousQuestion,
   onSelectAnswer,
   onSubmit,
+  startTimer,
+  updateTimer,
 } from '../redux/actions';
 import { Colors } from '../styles/colors';
 import { Answer } from '../components/answer';
+import { formatSecondsToHour } from '../redux/utils/utils';
+
+import { Button } from '../components/button';
 
 const mapStateToProps = (state) => {
   return {
@@ -24,6 +28,9 @@ const mapStateToProps = (state) => {
     showScore: state.showScore,
     totalScore: state.totalScore,
     currentQuestionIndex: state.currentQuestionIndex,
+    timer: state.timer,
+    timeLeft: state.timeLeft,
+    hasStarted: state.hasStarted,
   };
 };
 
@@ -34,6 +41,8 @@ const mapDispatchToProps = (dispatch) => {
     submitScore: () => dispatch(onSubmit()),
     onPreviousQuestion: () => dispatch(onPreviousQuestion()),
     onNextQuestion: () => dispatch(onNextQuestion()),
+    updateTime: () => dispatch(updateTimer()),
+    startTime: () => dispatch(startTimer()),
   };
 };
 
@@ -41,15 +50,30 @@ const K53Questions = ({
   questions,
   currentQuestionIndex,
   selectAnswer,
+  timer,
+  updateTime,
+  startTime,
+  hasStarted,
   showScore,
   submitScore,
   totalScore,
   onPreviousQuestion,
   onNextQuestion,
+  navigation
 }) => {
+  const [timeLeft, setTimeLeft] = useState('00:00');
   const currentQuestion = questions[currentQuestionIndex];
   const answers = questions[currentQuestionIndex].possibleAnswers;
   const answerIndex = questions[currentQuestionIndex].answer;
+
+  useEffect(() => {
+    const time = setInterval(() => {
+      if (hasStarted) {
+        setTimeLeft(formatSecondsToHour(timer));
+      }
+    }, 1000);
+    return () => clearInterval(time);
+  });
 
   return (
     <SafeAreaView style={styles.container}>
@@ -69,9 +93,12 @@ const K53Questions = ({
             source={{ uri: 'https://juniusl.com/single_carriage.png' }}
           />
         </View>
-        <Text style={styles.questionTitle}>{currentQuestion.title}</Text>
+        <Text onPress={() => startTime()} style={styles.questionTitle}>
+          {currentQuestion.title}
+        </Text>
       </View>
       <View style={styles.answersContainer}>
+        <Text style={styles.timer}>{timeLeft}</Text>
         {answers.map((answer, index) => (
           <Answer
             key={index}
@@ -82,17 +109,25 @@ const K53Questions = ({
             index={index}
           />
         ))}
+        <View style={styles.buttonContainer}>
+          <Button onPress={onPreviousQuestion} style={[styles.buttons, styles.prevButton]} title='prev' />
+          <Button onPress={() => navigation.navigate('Results', { results: questions })} style={styles.submitButton} title='Submit' />
+          <Button onPress={onNextQuestion} style={[styles.buttons, styles.nextButton]} title='next' />
+        </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export const Questions = connect(mapStateToProps, mapDispatchToProps)(K53Questions);
+export const Questions = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(K53Questions);
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
-    flex: 1,
+    flexGrow: 2,
   },
   questionTitle: {
     fontSize: 25,
@@ -100,15 +135,14 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   questionTitleContainer: {
-    flex: 1,
+    flexGrow: 2,
     paddingHorizontal: 30,
   },
   answersContainer: {
-    flex: 1,
-    backgroundColor: Colors.blue,
+    flexGrow: 1,
+    backgroundColor: Colors.darkBlue,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    justifyContent: 'center',
     paddingHorizontal: 20,
   },
   image: {
@@ -128,4 +162,45 @@ const styles = StyleSheet.create({
   progressContainer: {
     paddingHorizontal: 30,
   },
+  timer: {
+    color: Colors.white,
+    fontSize: 18,
+    textAlign: 'center',
+    paddingVertical: 20,
+    fontWeight: 'bold',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 30,
+  },
+  submitButton: {
+    width: 90,
+    height: 90,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10,
+    borderRadius: 90 / 2,
+    backgroundColor: Colors.white,
+    borderWidth: 2,
+    borderColor: Colors.darkBlue,
+    zIndex: 1,
+  },
+  buttons: {
+    backgroundColor: Colors.white,
+    height: 50,
+    width: 100,
+  },
+  prevButton: {
+    marginRight: -10,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
+  nextButton: {
+    marginLeft: -10,
+    zIndex: 0,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+  }
 });

@@ -1,4 +1,4 @@
-import { ON_NEXT_QUESTION, ON_PREVIOUS_QUESTION, ON_SELECT_ANSWER, ON_SUBMIT } from '../constants'
+import { ON_NEXT_QUESTION, START_TIMER, ON_PREVIOUS_QUESTION, UPDATE_TIMER, ON_SELECT_ANSWER, ON_SUBMIT } from '../constants'
 
 export const onSelectAnswer = (payload) => {
   return {
@@ -19,9 +19,21 @@ export const onPreviousQuestion = () => {
   }
 }
 
+export const updateTimer = () => {
+  return {
+    type: UPDATE_TIMER,
+  }
+}
+
 export const onNextQuestion = () => {
   return {
     type: ON_NEXT_QUESTION
+  }
+}
+
+export const startTimer = () => {
+  return {
+    type: START_TIMER,
   }
 }
 

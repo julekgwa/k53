@@ -32,6 +32,7 @@ const initState = {
       ],
       correct: 2,
       answer: -1,
+      category: 'rules',
     },
     {
       title: 'A light/heavy vehicle should not carry a load that projects...',
@@ -51,6 +52,7 @@ const initState = {
       ],
       correct: 1,
       answer: -1,
+      category: 'rules',
     },
     {
       title: 'A light/heavy vehicle should not carry a load that projects...',
@@ -70,6 +72,7 @@ const initState = {
       ],
       correct: 1,
       answer: -1,
+      category: 'rules',
     },
   ],
   showScore: false,

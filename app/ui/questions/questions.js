@@ -15,12 +15,12 @@ import {
   onSubmit,
   startTimer,
   updateTimer,
-} from '../redux/actions';
-import { Colors } from '../styles/colors';
-import { Answer } from '../components/answer';
-import { formatSecondsToHour } from '../redux/utils/utils';
+} from '../../redux/actions';
+import { Colors } from '../../styles/colors';
+import { Answer } from '../../components/answer';
+import { formatSecondsToHour } from '../../redux/utils/utils';
 
-import { Button } from '../components/button';
+import { Button } from '../../components/button';
 
 const mapStateToProps = (state) => {
   return {
@@ -51,20 +51,18 @@ const K53Questions = ({
   currentQuestionIndex,
   selectAnswer,
   timer,
-  updateTime,
   startTime,
   hasStarted,
-  showScore,
-  submitScore,
-  totalScore,
   onPreviousQuestion,
   onNextQuestion,
-  navigation
+  navigation,
+  route
 }) => {
   const [timeLeft, setTimeLeft] = useState('00:00');
   const currentQuestion = questions[currentQuestionIndex];
   const answers = questions[currentQuestionIndex].possibleAnswers;
   const answerIndex = questions[currentQuestionIndex].answer;
+  const { type } = route.params;
 
   useEffect(() => {
     const time = setInterval(() => {
@@ -111,7 +109,7 @@ const K53Questions = ({
         ))}
         <View style={styles.buttonContainer}>
           <Button onPress={onPreviousQuestion} style={[styles.buttons, styles.prevButton]} title='prev' />
-          <Button onPress={() => navigation.navigate('Results', { results: questions })} style={styles.submitButton} title='Submit' />
+          <Button onPress={() => navigation.navigate('Results', { results: questions, type })} style={styles.submitButton} title='Submit' />
           <Button onPress={onNextQuestion} style={[styles.buttons, styles.nextButton]} title='next' />
         </View>
       </View>

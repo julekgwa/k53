@@ -1,12 +1,12 @@
 import React from 'react';
 import { connect, Provider } from 'react-redux';
-import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Questions, Home } from './app/navigation';
 import { store } from './app/redux/store';
 import { Colors } from './app/styles/colors';
 import { Results } from './app/ui/results/results';
+import { Text } from './app/core/text';
+import { Questions, Home, ConfirmTest } from './app/ui';
 
 const mapStateToProps = (state) => {
   return {
@@ -59,7 +59,33 @@ export default function App() {
             name='Home'
             component={Home}
           />
-          <Stack.Screen options={{ headerBackTitleVisible: false,}} name='Results' component={Results} />
+          <Stack.Screen
+            options={{
+              headerBackTitleVisible: false,
+              headerStyle: {
+                backgroundColor: Colors.white,
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+            }}
+            name='Results'
+            component={Results}
+          />
+          <Stack.Screen
+            options={{
+              title: 'Take Test',
+              headerBackTitleVisible: false,
+              headerStyle: {
+                backgroundColor: Colors.white,
+                elevation: 0,
+                shadowOpacity: 0,
+                borderBottomWidth: 0,
+              },
+            }}
+            name='ConfirmTest'
+            component={ConfirmTest}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

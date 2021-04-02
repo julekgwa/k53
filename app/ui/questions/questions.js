@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import * as Progress from 'react-native-progress';
 import {
+  getQuestions,
   onNextQuestion,
   onPreviousQuestion,
   onSelectAnswer,
@@ -43,6 +44,7 @@ const mapDispatchToProps = (dispatch) => {
     onNextQuestion: () => dispatch(onNextQuestion()),
     updateTime: () => dispatch(updateTimer()),
     startTime: () => dispatch(startTimer()),
+    getQuestions: () => dispatch(getQuestions())
   };
 };
 
@@ -56,12 +58,13 @@ const K53Questions = ({
   onPreviousQuestion,
   onNextQuestion,
   navigation,
-  route
+  route,
+  getQuestions
 }) => {
   const [timeLeft, setTimeLeft] = useState('00:00');
-  const currentQuestion = questions[currentQuestionIndex];
-  const answers = questions[currentQuestionIndex].possibleAnswers;
-  const answerIndex = questions[currentQuestionIndex].answer;
+  const currentQuestion = questions[currentQuestionIndex] || {};
+  const answers =  questions[currentQuestionIndex] && questions[currentQuestionIndex].possibleAnswers || [];
+  const answerIndex =  questions[currentQuestionIndex] && questions[currentQuestionIndex].answer;
   const { type } = route.params;
 
   useEffect(() => {
@@ -72,6 +75,10 @@ const K53Questions = ({
     }, 1000);
     return () => clearInterval(time);
   });
+
+  useEffect(() => {
+    getQuestions();
+  }, [])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,7 +110,7 @@ const K53Questions = ({
             answerIndex={answerIndex}
             questionNumber={currentQuestionIndex}
             onSelectAnswer={selectAnswer}
-            title={answer.label}
+            title={answer}
             index={index}
           />
         ))}

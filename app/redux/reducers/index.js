@@ -5,76 +5,14 @@ import {
   ON_NEXT_QUESTION,
   ON_PREVIOUS_QUESTION,
 } from 'app/redux/constants';
-import { START_TIMER } from '../constants';
+import { GET_QUESTIONS, START_TIMER } from '../constants';
 import { formatSecondsToHour } from '../utils/utils';
 
 const initState = {
   timer: '',
   timeLeft: '',
   hasStarted: false,
-  questions: [
-    {
-      title: 'The most important RULE OF THE ROAD in South Africa is?',
-      possibleAnswers: [
-        {
-          label:
-            'Always be courteous and considerate towards fellow road users.',
-          isChecked: 'unchecked',
-        },
-        {
-          label: 'Do not exceed the speed limit.',
-          isChecked: 'unchecked',
-        },
-        {
-          label: 'Keep to the left side of the road far as is safe.',
-          isChecked: 'unchecked',
-        },
-      ],
-      correct: 2,
-      answer: -1,
-      category: 'rules',
-    },
-    {
-      title: 'A light/heavy vehicle should not carry a load that projects...',
-      possibleAnswers: [
-        {
-          label: 'More than 10 metres to the front of the vehicle.',
-          isChecked: 'unchecked',
-        },
-        {
-          label: 'More than 1.8 metres to the back of the vehicle.',
-          isChecked: 'unchecked',
-        },
-        {
-          label: 'Less than 1.8 millimetres to the left.',
-          isChecked: 'unchecked',
-        },
-      ],
-      correct: 1,
-      answer: -1,
-      category: 'rules',
-    },
-    {
-      title: 'A light/heavy vehicle should not carry a load that projects...',
-      possibleAnswers: [
-        {
-          label: 'More than 10 metres to the front of the vehicle.',
-          isChecked: 'unchecked',
-        },
-        {
-          label: 'More than 1.8 metres to the back of the vehicle.',
-          isChecked: 'unchecked',
-        },
-        {
-          label: 'Less than 1.8 millimetres to the left.',
-          isChecked: 'unchecked',
-        },
-      ],
-      correct: 1,
-      answer: -1,
-      category: 'rules',
-    },
-  ],
+  questions: [],
   showScore: false,
   totalScore: 0,
   currentQuestionIndex: 0,
@@ -88,17 +26,8 @@ export function rootReducer(state = initState, action) {
       const answerIndex = action.payload.answerIndex;
       const next = state.currentQuestionIndex + 1;
 
-      for (
-        let i = 0;
-        i < tempQuestions[questionNumber].possibleAnswers.length;
-        i++
-      ) {
-        tempQuestions[questionNumber].possibleAnswers[i].isChecked =
-          'unchecked';
-      }
       tempQuestions[questionNumber].answer = answerIndex;
-      tempQuestions[questionNumber].possibleAnswers[answerIndex].isChecked =
-        'checked';
+
       return {
         ...state,
         questions: tempQuestions,
@@ -145,6 +74,11 @@ export function rootReducer(state = initState, action) {
         timeLeft: formatSecondsToHour(s),
         hasStarted: true,
       };
+    case GET_QUESTIONS:
+    return {
+      ...state,
+      questions: action.payload
+    }
     default:
       return state;
   }

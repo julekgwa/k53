@@ -1,4 +1,7 @@
-import { ON_NEXT_QUESTION, START_TIMER, ON_PREVIOUS_QUESTION, UPDATE_TIMER, ON_SELECT_ANSWER, ON_SUBMIT } from '../constants'
+import { ON_NEXT_QUESTION, START_TIMER, ON_PREVIOUS_QUESTION, UPDATE_TIMER, ON_SELECT_ANSWER, ON_SUBMIT, REQUEST_METHOD, GET_QUESTIONS, SET_LOADER, ERROR } from '../constants'
+import { fetchItem } from './utils';
+
+const GET_QUESTIONS_URL = 'https://www.juniusl.com/v1/questions';
 
 export const onSelectAnswer = (payload) => {
   return {
@@ -35,5 +38,26 @@ export const startTimer = () => {
   return {
     type: START_TIMER,
   }
+}
+
+export function getQuestions() {
+
+  return dispatch => {
+
+    const requestOptions = {
+      url: GET_QUESTIONS_URL,
+      method: REQUEST_METHOD.get,
+    };
+
+    const action = {
+      type: GET_QUESTIONS,
+      loaderType: SET_LOADER,
+      error: ERROR,
+    };
+
+    return fetchItem(dispatch, requestOptions, true, action);
+
+  };
+
 }
 

@@ -5,7 +5,7 @@ import {
   ON_NEXT_QUESTION,
   ON_PREVIOUS_QUESTION,
 } from 'app/redux/constants';
-import { GET_QUESTIONS, START_TIMER } from '../constants';
+import { ERROR, GET_QUESTIONS, SET_LOADER, START_TIMER } from '../constants';
 import { formatSecondsToHour } from '../utils/utils';
 
 const initState = {
@@ -16,6 +16,9 @@ const initState = {
   showScore: false,
   totalScore: 0,
   currentQuestionIndex: 0,
+  isLoading: true,
+  isError: false,
+  message: ''
 };
 
 export function rootReducer(state = initState, action) {
@@ -79,6 +82,19 @@ export function rootReducer(state = initState, action) {
       ...state,
       questions: action.payload
     }
+
+    case ERROR:
+    return {
+      ...state,
+      isError: action.payload.error,
+      message: action.payload.message,
+    };
+
+    case SET_LOADER:
+    return {
+      ...state,
+      isLoading: action.payload,
+    };
     default:
       return state;
   }

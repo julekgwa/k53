@@ -1,3 +1,4 @@
+import { setError } from '.';
 import { fetchAPI } from '../../fetch/fetch';
 
 const dispatcher = (dispatch, type, payload) => dispatch({

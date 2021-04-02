@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  Image,
-} from 'react-native';
+import { SafeAreaView, View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
+import Image from 'react-native-image-progress';
 import * as Progress from 'react-native-progress';
+const Pulse = require('react-native-pulse').default;
 import {
   getQuestions,
   onNextQuestion,
@@ -32,6 +28,9 @@ const mapStateToProps = (state) => {
     timer: state.timer,
     timeLeft: state.timeLeft,
     hasStarted: state.hasStarted,
+    isLoading: state.isLoading,
+    isError: state.isError,
+    message: state.message,
   };
 };
 
@@ -44,7 +43,7 @@ const mapDispatchToProps = (dispatch) => {
     onNextQuestion: () => dispatch(onNextQuestion()),
     updateTime: () => dispatch(updateTimer()),
     startTime: () => dispatch(startTimer()),
-    getQuestions: () => dispatch(getQuestions())
+    getQuestions: () => dispatch(getQuestions()),
   };
 };
 
@@ -59,12 +58,19 @@ const K53Questions = ({
   onNextQuestion,
   navigation,
   route,
-  getQuestions
+  getQuestions,
+  isLoading,
+  isError,
+  message,
 }) => {
   const [timeLeft, setTimeLeft] = useState('00:00');
   const currentQuestion = questions[currentQuestionIndex] || {};
-  const answers =  questions[currentQuestionIndex] && questions[currentQuestionIndex].possibleAnswers || [];
-  const answerIndex =  questions[currentQuestionIndex] && questions[currentQuestionIndex].answer;
+  const answers =
+    (questions[currentQuestionIndex] &&
+      questions[currentQuestionIndex].possibleAnswers) ||
+    [];
+  const answerIndex =
+    questions[currentQuestionIndex] && questions[currentQuestionIndex].answer;
   const { type } = route.params;
 
   useEffect(() => {
@@ -78,48 +84,77 @@ const K53Questions = ({
 
   useEffect(() => {
     getQuestions();
-  }, [])
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.progressContainer}>
-        <Progress.Bar
-          style={styles.progressBar}
-          borderWidth={0}
-          progress={(currentQuestionIndex + 1) / questions.length}
-          width={null}
-          borderRadius={0}
+      {isLoading ? (
+        <Pulse
+          color={Colors.darkBlue}
+          numPulses={3}
+          diameter={400}
+          speed={20}
+          duration={2000}
         />
-      </View>
-      <View style={styles.questionTitleContainer}>
-        <View style={styles.imageContainer}>
-          <Image
-            style={styles.image}
-            source={{ uri: 'https://juniusl.com/single_carriage.png' }}
-          />
-        </View>
-        <Text onPress={() => startTime()} style={styles.questionTitle}>
-          {currentQuestion.title}
+      ) : isError ? (
+        <Text>{message}</Text>
+      ) : (
+        <Text>
+          <View style={styles.progressContainer}>
+            <Progress.Bar
+              style={styles.progressBar}
+              borderWidth={0}
+              progress={(currentQuestionIndex + 1) / questions.length}
+              width={null}
+              borderRadius={0}
+            />
+          </View>
+          <View style={styles.questionTitleContainer}>
+            <View style={styles.imageContainer}>
+              <Image
+                indicator={Progress.Bar}
+                style={styles.image}
+                source={{ uri: 'https://juniusl.com/single_carriage.png' }}
+              />
+            </View>
+            <Text onPress={() => startTime()} style={styles.questionTitle}>
+              {currentQuestion.title}
+            </Text>
+          </View>
+          <View style={styles.answersContainer}>
+            <Text style={styles.timer}>{timeLeft}</Text>
+            {answers.map((answer, index) => (
+              <Answer
+                key={index}
+                answerIndex={answerIndex}
+                questionNumber={currentQuestionIndex}
+                onSelectAnswer={selectAnswer}
+                title={answer}
+                index={index}
+              />
+            ))}
+            <View style={styles.buttonContainer}>
+              <Button
+                onPress={onPreviousQuestion}
+                style={[styles.buttons, styles.prevButton]}
+                title='prev'
+              />
+              <Button
+                onPress={() =>
+                  navigation.navigate('Results', { results: questions, type })
+                }
+                style={styles.submitButton}
+                title='Submit'
+              />
+              <Button
+                onPress={onNextQuestion}
+                style={[styles.buttons, styles.nextButton]}
+                title='next'
+              />
+            </View>
+          </View>
         </Text>
-      </View>
-      <View style={styles.answersContainer}>
-        <Text style={styles.timer}>{timeLeft}</Text>
-        {answers.map((answer, index) => (
-          <Answer
-            key={index}
-            answerIndex={answerIndex}
-            questionNumber={currentQuestionIndex}
-            onSelectAnswer={selectAnswer}
-            title={answer}
-            index={index}
-          />
-        ))}
-        <View style={styles.buttonContainer}>
-          <Button onPress={onPreviousQuestion} style={[styles.buttons, styles.prevButton]} title='prev' />
-          <Button onPress={() => navigation.navigate('Results', { results: questions, type })} style={styles.submitButton} title='Submit' />
-          <Button onPress={onNextQuestion} style={[styles.buttons, styles.nextButton]} title='next' />
-        </View>
-      </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -207,5 +242,5 @@ const styles = StyleSheet.create({
     zIndex: 0,
     borderTopRightRadius: 10,
     borderBottomRightRadius: 10,
-  }
+  },
 });

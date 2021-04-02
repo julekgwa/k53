@@ -40,6 +40,15 @@ export const startTimer = () => {
   }
 }
 
+export function setError(type, payload) {
+
+  return {
+    type,
+    payload,
+  };
+
+}
+
 export function getQuestions() {
 
   return dispatch => {
